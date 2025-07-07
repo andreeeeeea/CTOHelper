@@ -1,6 +1,8 @@
 using CTOHelper.Web.Components;
 using CTOHelper.Application.Interfaces;
 using CTOHelper.Application.Services;
+using CTOHelper.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-    builder.Services.AddScoped<ITaskService, TestService>(); // for testing purposes
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ITaskService, TestService>(); // for testing purposes
 
 var app = builder.Build();
 
