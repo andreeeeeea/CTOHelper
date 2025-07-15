@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
         : base(options)
     {
     }
-    
+
     public DbSet<DevTask> DevTasks { get; set; } = null!;
+    public DbSet<TaskItem> TaskItems { get; set; } = null!;
 }

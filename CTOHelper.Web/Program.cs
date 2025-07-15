@@ -3,6 +3,7 @@ using CTOHelper.Application.Interfaces;
 using CTOHelper.Application.Services;
 using CTOHelper.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 
 var builder = WebApplication.CreateBuilder(args);
