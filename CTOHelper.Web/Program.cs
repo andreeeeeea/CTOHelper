@@ -1,6 +1,6 @@
 using CTOHelper.Web.Components;
 using CTOHelper.Application.Interfaces;
-using CTOHelper.Application.Services;
+using CTOHelper.Infrastructure.Services;
 using CTOHelper.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -15,7 +15,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ITaskService, TestService>(); // for testing purposes
+builder.Services.AddScoped<ITaskService, TaskService>(); 
 
 var app = builder.Build();
 
@@ -23,7 +23,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

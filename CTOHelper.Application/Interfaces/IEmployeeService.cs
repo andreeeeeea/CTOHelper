@@ -1,3 +1,5 @@
+using CTOHelper.Domain.Entities;
+
 namespace CTOHelper.Application.Interfaces;
 
 public interface IEmployeeService

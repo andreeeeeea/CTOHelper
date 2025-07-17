@@ -24,6 +24,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        tasks = await TaskService.GetAllTasksAsync();
+        tasks = (await TaskService.GetTasksAsync()).ToList();
     }
 }
