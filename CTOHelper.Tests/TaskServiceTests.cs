@@ -1,4 +1,5 @@
 using CTOHelper.Domain.Entities;
+using CTOHelper.Domain.Enums;
 using CTOHelper.Infrastructure.Database;
 using CTOHelper.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -66,11 +67,23 @@ public class TaskServiceTests : IDisposable
     [Fact]
     public async Task UpdateTask_ShouldUpdateTask()
     {
+        var user = new User
+        {
+            Name = "Test User",
+            Email = "test@user.com",
+            Role = UserRole.Developer
+        };
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+
         var task = new DevTask
         {
             Title = "Test Task",
-            Description = "This is a test task",
-            DueDate = DateTime.Now.AddDays(7)
+            Description = "Test Description",
+            DueDate = DateTime.Now.AddDays(1),
+            CreatedByUserId = user.Id,
+            CreatedBy = user,
+            Status = "New"
         };
         _db.DevTasks.Add(task);
         await _db.SaveChangesAsync();

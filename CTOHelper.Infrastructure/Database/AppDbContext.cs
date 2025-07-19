@@ -16,6 +16,32 @@ public class AppDbContext : DbContext
     public DbSet<DevTask> DevTasks { get; set; } = null!;
     public DbSet<TaskItem> TaskItems { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Team> Teams { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+        modelBuilder.Entity<Team>()
+            .HasOne(t => t.TeamLead)
+            .WithMany()
+            .HasForeignKey(t => t.TeamLeadId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<DevTask>()
+            .HasOne(d => d.AssignedTo)
+            .WithMany()
+            .HasForeignKey(d => d.AssignedToUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<DevTask>()
+            .HasOne(d => d.CreatedBy)
+            .WithMany()
+            .HasForeignKey(d => d.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 }
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
