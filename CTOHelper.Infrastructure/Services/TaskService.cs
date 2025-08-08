@@ -34,8 +34,9 @@ public class TaskService : ITaskService
         existingTask.Title = task.Title;
         existingTask.Description = task.Description;
         existingTask.DueDate = task.DueDate;
-        existingTask.AssignedToEmployeeId = task.AssignedToEmployeeId;
+        existingTask.AssignedToUserId = task.AssignedToUserId;
         existingTask.Status = task.Status;
+        existingTask.UpdatedAt = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
         return true;
