@@ -1,0 +1,75 @@
+NET\CTOHelper\CTOHelper.Web\Components\Pages\SignUp.razor
+@page "/signup"
+@using CTOHelper.Domain.Models
+@using CTOHelper.Application.Interfaces
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Sign Up</PageTitle>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1>Sign Up</h1>
+
+        <EditForm Model="@registration" OnValidSubmit="@HandleRegistration">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group mb-3">
+                <label for="name">Name</label>
+                <InputText id="name" @bind-Value="registration.Name" class="form-control" />
+                <ValidationMessage For="@(() => registration.Name)" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="email">Email</label>
+                <InputText id="email" @bind-Value="registration.Email" class="form-control" />
+                <ValidationMessage For="@(() => registration.Email)" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <InputText type="password" id="password" @bind-Value="registration.Password" class="form-control" />
+                <ValidationMessage For="@(() => registration.Password)" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="confirmPassword">Confirm Password</label>
+                <InputText type="password" id="confirmPassword" @bind-Value="registration.ConfirmPassword" class="form-control" />
+                <ValidationMessage For="@(() => registration.ConfirmPassword)" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private UserRegistration registration = new();
+    private string? errorMessage;
+
+    private async Task HandleRegistration()
+    {
+        try
+        {
+            var user = new User
+            {
+                Name = registration.Name,
+                Email = registration.Email,
+                Role = UserRole.Developer
+            };
+
+            await UserService.CreateUserAsync(user);
+            NavigationManager.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Registration failed. Please try again.";
+        }
+    }
+}
